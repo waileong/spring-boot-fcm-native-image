@@ -1,6 +1,6 @@
 = Spring Boot FCM Native Image
 
-image:https://img.shields.io/badge/Spring%20Boot-3.2.2-brightgreen.svg[link="https://spring.io/projects/spring-boot"]
+image:https://img.shields.io/badge/Spring%20Boot-3.2.x-brightgreen.svg[link="https://spring.io/projects/spring-boot"]
 image:https://img.shields.io/badge/GraalVM-0.9.28-orange.svg[link="https://www.graalvm.org/"]
 image:https://img.shields.io/badge/Java-21-blue.svg[link="https://adoptopenjdk.net/?variant=openjdk21&jvmVariant=hotspot"]
 

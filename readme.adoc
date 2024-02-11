@@ -1,0 +1,145 @@
+= Spring Boot FCM Native Image
+
+image:https://img.shields.io/badge/Spring%20Boot-3.2.2-brightgreen.svg[link="https://spring.io/projects/spring-boot"]
+image:https://img.shields.io/badge/GraalVM-0.9.28-orange.svg[link="https://www.graalvm.org/"]
+image:https://img.shields.io/badge/Java-21-blue.svg[link="https://adoptopenjdk.net/?variant=openjdk21&jvmVariant=hotspot"]
+
+Spring Boot FCM Native Image is a Java application built with Spring Boot, designed to facilitate sending notifications through Firebase Cloud Messaging (FCM) and optimized for GraalVM native compilation. It supports various types of notifications, including simple notifications, notifications with additional data, and data-only messages. This application leverages GraalVM's native image capabilities for faster startup time and reduced memory footprint.
+
+== Features
+
+* Sending synchronous complex FCM notifications
+* Sending simple FCM notifications
+* Sending simple FCM notifications with Collapse Key
+* Sending simple FCM notifications with additional data
+* Sending data-only FCM messages
+* Swagger UI integration for API documentation
+* Optimized for GraalVM native compilation
+
+== Prerequisites
+
+* JDK 21
+* GraalVM (for native image compilation)
+* Docker (optional for containerization)
+* An FCM project and its configuration
+
+== Setup
+
+=== Clone the Repository
+
+[source,shell]
+----
+git clone https://github.com/waileong/spring-boot-fcm-native-image.git
+cd spring-boot-fcm-native-image
+----
+
+=== Configure Application
+
+Before running the application, ensure you have configured your environment with the necessary Firebase Cloud Messaging (FCM) service account credentials. These credentials are essential for authenticating your application's requests to Firebase services.
+
+You will need to specify the following properties in your `application.properties` or `application.yml` file, or as environment variables:
+
+* `fcm.credential.project-id`: Your Firebase project ID.
+* `fcm.credential.client-email`: The client email address associated with your Firebase project's service account.
+* `fcm.credential.private-key`: The private key of your service account. Note that if you're specifying this in a properties file, you must escape newlines with `\\n`.
+* `fcm.credential.private-key-id`: The private key ID from your Firebase service account.
+
+Here's an example of how you might set these in your `application.yml`:
+
+[source,yaml]
+----
+fcm:
+  credential:
+    project-id: your-project-id
+    client-email: firebase-adminsdk-xxxxx@your-project-id.iam.gserviceaccount.com
+    private-key: |
+      -----BEGIN PRIVATE KEY-----
+      MIIEvQIBADANBgkqh...
+      -----END PRIVATE KEY-----
+    private-key-id: your-private-key-id
+----
+
+Alternatively, if you prefer to use environment variables, you can set them in your operating system, or define them in your Docker or `docker-compose` configurations:
+
+[source,yaml]
+----
+environment:
+  - fcm.credential.project-id=your-project-id
+  - fcm.credential.client-email=firebase-adminsdk-xxxxx@your-project-id.iam.gserviceaccount.com
+  - fcm.credential.private-key=-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqh...\n-----END PRIVATE KEY-----\n
+  - fcm.credential.private-key-id=your-private-key-id
+----
+
+For more information on obtaining these credentials, refer to the Firebase documentation on creating and managing service accounts.
+
+=== Build and Run
+
+* To build the project and run tests:
+
+[source,shell]
+----
+./gradlew build
+----
+
+* To run the application:
+
+[source,shell]
+----
+./gradlew bootRun
+----
+
+=== Building Docker Image
+
+* To build a Docker image for the application:
+
+[source,shell]
+----
+./gradlew bootBuildImage
+----
+
+== Usage
+
+=== Running Locally
+
+Refer to the Swagger UI at `http://localhost:8080/swagger-ui.html` for the API documentation and testing endpoints.
+
+=== Running with Docker
+
+Before running the application with Docker, ensure you have Docker installed and running on your system.
+
+* To build a Docker image for the application, execute:
+
+[source,shell]
+----
+./gradlew bootBuildImage
+----
+
+This command builds a Docker image named `docker.io/waileong/spring-boot-fcm-native-image:1.0.0`. The image includes all necessary dependencies and configurations to run the Spring Boot application.
+
+* After building the image, you can run it directly with Docker:
+
+[source,shell]
+----
+docker run -p 8080:8080 docker.io/waileong/spring-boot-fcm-native-image:1.0.0
+----
+
+=== Running with Docker Compose
+
+To facilitate deployment and testing, a `docker-compose` file is provided. This file, named `spring-boot-fcm-native-image.yml`, sets up the Spring Boot FCM Native Image service and exposes it on port 8080.
+
+* To start the service using `docker-compose`, navigate to the directory containing `spring-boot-fcm-native-image.yml` and run:
+
+[source,shell]
+----
+docker-compose -f spring-boot-fcm-native-image.yml up
+----
+
+This command downloads the Docker image from Docker Hub (`docker.io/waileong/spring-boot-fcm-native-image:1.0.0`) if it's not already present on your system, and starts a container with the service running inside. The service is accessible at `http://localhost:8080`.
+
+== Contributing
+
+Contributions are welcome! Please feel free to submit a pull request or open an issue.
+
+== License
+
+Licensed under the MIT License. See `LICENSE.adoc` for full details

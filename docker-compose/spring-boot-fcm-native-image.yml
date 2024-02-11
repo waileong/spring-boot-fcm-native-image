@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  spring-boot-fcm-native-image:
+    image: "docker.io/waileong/spring-boot-fcm-native-image:1.0.0"
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+#    environment:
+#      - TZ=
+#      - fcm.credential.project-id=
+#      - fcm.credential.client-email=
+#      - fcm.credential.private-key=
+#      - fcm.credential.private-key-id=
+    deploy:
+      resources:
+        limits:
+          memory: 128M

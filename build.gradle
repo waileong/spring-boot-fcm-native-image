@@ -1,0 +1,69 @@
+plugins {
+    id "java-library"
+    id "maven-publish"
+    id "signing"
+    id "org.springframework.boot" version "${spring_boot_version}"
+    id "org.graalvm.buildtools.native" version "${graalvm_buildtools_native_version}"
+}
+
+group = 'io.github.waileong'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    withJavadocJar()
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+}
+
+tasks.named("bootBuildImage") {
+    imageName = "waileong/${project.name}:${version}"
+    environment = [
+            "BP_JVM_VERSION": "21"
+    ]
+}
+
+springBoot {
+    buildInfo()
+}
+
+dependencies {
+    implementation "io.github.waileong:spring-boot-fcm:$spring_boot_fcm_version"
+
+    // Spring Boot BOM for dependency management
+    implementation platform("org.springframework.boot:spring-boot-dependencies:$spring_boot_version")
+
+    // Spring Boot starters
+    implementation("org.springframework.boot:spring-boot-starter-aop")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
+    // swagger
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdoc_version")
+    implementation("io.swagger.core.v3:swagger-annotations:$io_swagger_v3_version")
+
+    // Annotation processor
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version")
+
+    // Testing dependencies
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.assertj:assertj-core")
+}
+
+// Java compile options
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.deprecation = true
+    options.compilerArgs.add("-parameters")
+}
+
+test {
+    useJUnitPlatform()
+}

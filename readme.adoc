@@ -1,7 +1,7 @@
 = Spring Boot FCM Native Image
 
 image:https://img.shields.io/badge/Spring%20Boot-3.2.x-brightgreen.svg[link="https://spring.io/projects/spring-boot"]
-image:https://img.shields.io/badge/GraalVM-0.9.28-orange.svg[link="https://www.graalvm.org/"]
+image:https://img.shields.io/badge/GraalVM-0.10.1-orange.svg[link="https://www.graalvm.org/"]
 image:https://img.shields.io/badge/Java-21-blue.svg[link="https://adoptopenjdk.net/?variant=openjdk21&jvmVariant=hotspot"]
 
 Spring Boot FCM Native Image is a Java application built with Spring Boot, designed to facilitate sending notifications through Firebase Cloud Messaging (FCM) and optimized for GraalVM native compilation. It supports various types of notifications, including simple notifications, notifications with additional data, and data-only messages. This application leverages GraalVM's native image capabilities for faster startup time and reduced memory footprint.
@@ -114,13 +114,13 @@ Before running the application with Docker, ensure you have Docker installed and
 ./gradlew bootBuildImage
 ----
 
-This command builds a Docker image named `docker.io/waileong/spring-boot-fcm-native-image:1.0.0`. The image includes all necessary dependencies and configurations to run the Spring Boot application.
+This command builds a Docker image named `docker.io/waileong/spring-boot-fcm-native-image:1.0.1`. The image includes all necessary dependencies and configurations to run the Spring Boot application.
 
 * After building the image, you can run it directly with Docker:
 
 [source,shell]
 ----
-docker run -p 8080:8080 docker.io/waileong/spring-boot-fcm-native-image:1.0.0
+docker run -p 8080:8080 docker.io/waileong/spring-boot-fcm-native-image:1.0.1
 ----
 
 === Running with Docker Compose
@@ -134,7 +134,7 @@ To facilitate deployment and testing, a `docker-compose` file is provided. This 
 docker-compose -f spring-boot-fcm-native-image.yml up
 ----
 
-This command downloads the Docker image from Docker Hub (`docker.io/waileong/spring-boot-fcm-native-image:1.0.0`) if it's not already present on your system, and starts a container with the service running inside. The service is accessible at `http://localhost:8080`.
+This command downloads the Docker image from Docker Hub (`docker.io/waileong/spring-boot-fcm-native-image:1.0.1`) if it's not already present on your system, and starts a container with the service running inside. The service is accessible at `http://localhost:8080`.
 
 == Contributing
 

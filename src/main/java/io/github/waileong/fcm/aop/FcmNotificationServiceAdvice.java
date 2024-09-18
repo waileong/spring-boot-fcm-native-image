@@ -56,9 +56,8 @@ public class FcmNotificationServiceAdvice {
         try {
             Object result = pjp.proceed();
             if (result instanceof CompletableFuture<?> completableFuture) {
-                completableFuture.whenCompleteAsync((o, throwable) -> {
-                    doAuditLog(o, startTime, method, args);
-                }, this.executor);
+                completableFuture.whenCompleteAsync((o, throwable) ->
+                        doAuditLog(o, startTime, method, args), this.executor);
             } else {
                 doAuditLog(result, startTime, method, args);
             }
@@ -84,20 +83,18 @@ public class FcmNotificationServiceAdvice {
         long elapsedTime = Duration.between(startTime, ZonedDateTime.now()).toMillis();
         String respMsg = "";
         if (o != null) {
-            if (o instanceof FcmSendResponse response) {
-                if (response.getError() != null) {
-                    respMsg = String.valueOf(response.getError());
-                }
-            } else if (o instanceof FcmError error) {
-                respMsg = String.valueOf(error);
-            } else {
-                respMsg = String.valueOf(o);
+            switch (o) {
+                case FcmSendResponse response when response.getError() != null ->
+                        respMsg = String.valueOf(response.getError());
+                case FcmError error -> respMsg = String.valueOf(error);
+                default -> respMsg = String.valueOf(o);
+
             }
         }
 
         String sentTo = "";
-        if (args[0] instanceof String) {
-            sentTo = (String) args[0];
+        if (args[0] instanceof String str) {
+            sentTo = str;
         }
 
         String title = "";
@@ -105,13 +102,15 @@ public class FcmNotificationServiceAdvice {
             title = String.valueOf(args[1]);
         }
 
-        auditLogger.info("{},{},{},{},{},{}",
-                DATE_FORMAT.format(startTime),
-                elapsedTime,
-                method,
-                sentTo,
-                title,
-                respMsg
-        );
+        if (auditLogger.isInfoEnabled()) {
+            auditLogger.info("{},{},{},{},{},{}",
+                    DATE_FORMAT.format(startTime),
+                    elapsedTime,
+                    method,
+                    sentTo,
+                    title,
+                    respMsg
+            );
+        }
     }
 }
